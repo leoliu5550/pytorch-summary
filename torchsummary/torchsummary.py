@@ -13,7 +13,7 @@ def summary(
     device=torch.device('cuda:0'),
     dtypes=None,
     pr:bool = True ):
-    
+    # test
     result= summary_string(
         model, input_size, batch_size, device, dtypes,pr)
     if pr:
@@ -22,6 +22,7 @@ def summary(
 
 
 def summary_string(
+
     model, 
     input_size, 
     batch_size=-1, 
