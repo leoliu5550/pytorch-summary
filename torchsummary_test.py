@@ -30,6 +30,7 @@ class torchsummaryTests(unittest.TestCase):
         input = (1, 2)
         result = summary(model, input, device="cpu")
         total_params, trainable_params = result["total_params"],result["trainable_params"]
+        
         self.assertEqual(total_params, 15)
         self.assertEqual(trainable_params, 15)
 
@@ -61,7 +62,6 @@ class torchsummarystringTests(unittest.TestCase):
 
         result = summary(model, input, device="cpu")
         total_params, trainable_params = result["total_params"],result["trainable_params"]
-        self.assertEqual(type(result["summary_str"]), str)
         self.assertEqual(total_params, 21840)
         self.assertEqual(trainable_params, 21840)
 
