@@ -49,6 +49,10 @@ def summary_string(
                 summary[m_key]["output_shape"] = [
                     [-1] + list(o.size())[1:] for o in output
                 ]
+            elif isinstance(output,dict):
+                summary[m_key]["output_shape"] = [
+                    [-1] + list(o.size())[1:] for o in output.values()
+                ]
             else:
                 summary[m_key]["output_shape"] = list(output.size())
                 summary[m_key]["output_shape"][0] = batch_size
