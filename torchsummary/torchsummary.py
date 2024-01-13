@@ -1,20 +1,32 @@
 import torch
 import torch.nn as nn
-from torch.autograd import Variable
-
+# from torch.autograd import Variable
 from collections import OrderedDict
+from typing import bool
 import numpy as np
 
 
-def summary(model, input_size, batch_size=-1, device=torch.device('cuda:0'), dtypes=None):
-    result, params_info = summary_string(
-        model, input_size, batch_size, device, dtypes)
-    print(result)
+def summary(
+    model, 
+    input_size, 
+    batch_size=-1, 
+    device=torch.device('cuda:0'),
+    dtypes=None,
+    pr:bool = True ):
+    
+    result= summary_string(
+        model, input_size, batch_size, device, dtypes,pr)
+    if pr:
+        print(result["summary_str"])
+    return result
 
-    return params_info
 
-
-def summary_string(model, input_size, batch_size=-1, device=torch.device('cuda:0'), dtypes=None):
+def summary_string(
+    model, 
+    input_size, 
+    batch_size=-1, 
+    device=torch.device('cuda:0'), 
+    dtypes=None):
     if dtypes == None:
         dtypes = [torch.FloatTensor]*len(input_size)
 
@@ -57,7 +69,7 @@ def summary_string(model, input_size, batch_size=-1, device=torch.device('cuda:0
 
     # batch_size of 2 for batchnorm
     x = [torch.rand(2, *in_size).type(dtype).to(device=device)
-         for in_size, dtype in zip(input_size, dtypes)]
+        for in_size, dtype in zip(input_size, dtypes)]
 
     # create properties
     summary = OrderedDict()
@@ -117,4 +129,13 @@ def summary_string(model, input_size, batch_size=-1, device=torch.device('cuda:0
     summary_str += "Estimated Total Size (MB): %0.2f" % total_size + "\n"
     summary_str += "----------------------------------------------------------------" + "\n"
     # return summary
-    return summary_str, (total_params, trainable_params)
+    return {
+        "summary_str":summary_str, 
+        "total_params": total_params, 
+        "trainable_params":trainable_params,
+        "non_trainable_params":total_params - trainable_params,
+        "total_input_size":total_input_size,
+        "forward_backward_pass_size":total_output_size,
+        "total_params_size":total_params_size,
+        "estimated_total_size":total_size
+    }
