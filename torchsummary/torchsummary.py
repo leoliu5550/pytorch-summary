@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 # from torch.autograd import Variable
 from collections import OrderedDict
-from typing import bool
+# from typing import bool
 import numpy as np
 
 
@@ -15,14 +15,17 @@ def summary(
     pr:bool = True ):
     # test
     result= summary_string(
-        model, input_size, batch_size, device, dtypes,pr)
+        model, 
+        input_size, 
+        batch_size, 
+        device, 
+        dtypes)
     if pr:
         print(result["summary_str"])
     return result
 
 
 def summary_string(
-
     model, 
     input_size, 
     batch_size=-1, 
